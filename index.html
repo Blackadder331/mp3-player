@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Music Player</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <main>
+      <section>
+        <!-- Add elements to display the song name and album cover -->
+        <div id="song-info">
+          <img
+            id="album-cover"
+            src="/album-covers/headstone.png"
+            alt="Album Cover"
+          />
+          <h2 id="song-name">Song Name</h2>
+        </div>
+        <audio id="player" src="songs/headstone.mp3"></audio>
+
+        <div>
+          <button class="arrow" onclick="prevAudio()">❮❮</button>
+          <button onclick="playAudio()">Play</button>
+          <button onclick="pauseAudio()">Pause</button>
+          <button class="arrow" onclick="nextAudio()">❯❯</button>
+        </div>
+
+        <ul id="playlist">
+          <li class="active" data-album-cover="album-covers/headstone.png">
+            songs/headstone.mp3
+          </li>
+          <li data-album-cover="album-covers/creep.png">songs/creep.mp3</li>
+          <li data-album-cover="album-covers/bells-toll.png">
+            songs/bells-toll.mp3
+          </li>
+
+          <li data-album-cover="album-covers/bone-walk.png">
+            songs/bone-walk.mp3
+          </li>
+          <li data-album-cover="/album-covers/hype.png">songs/hype.m4a</li>
+        </ul>
+      </section>
+    </main>
+    <script>
+      var player = document.getElementById("player");
+      var playlist = document.getElementById("playlist");
+      var songs = playlist.getElementsByTagName("li");
+      var songNameElement = document.getElementById("song-name");
+      var albumCoverElement = document.getElementById("album-cover");
+      var i = 0;
+
+      function updateSongInfo() {
+        // Get the song name from the file path
+        var songName = songs[i].textContent.split("/").pop().split(".")[0];
+        songNameElement.textContent = songName;
+
+        // Get the album cover from the data-album-cover attribute
+        var albumCover = songs[i].dataset.albumCover;
+        albumCoverElement.src = albumCover;
+      }
+
+      function playAudio() {
+        player.play();
+      }
+
+      function pauseAudio() {
+        player.pause();
+      }
+
+      function nextAudio() {
+        i = ++i < songs.length ? i : 0;
+        player.src = songs[i].textContent;
+        player.play();
+        updateSongInfo();
+      }
+
+      function prevAudio() {
+        i = --i >= 0 ? i : songs.length - 1;
+        player.src = songs[i].textContent;
+        player.play();
+        updateSongInfo();
+      }
+
+      // Update the song info when the page loads
+      updateSongInfo();
+    </script>
+  </body>
+</html>
